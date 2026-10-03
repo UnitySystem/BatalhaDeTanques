@@ -9,7 +9,7 @@ public class TankAttack : StateFSM
     public TankAttack(GameObject _npc, Transform _player, AIComponent _aiTank, AStarPathfinding _pathfinding)
         : base(_npc, _player)
     {
-        name = STATE.Attack;
+        state = STATE.Attack;
         aiTank = _aiTank;
         pathfinding = _pathfinding;
     }

@@ -12,7 +12,7 @@ public class StateFSM
         ENTER, UPDATE, EXIT
     };
 
-    public STATE name;
+    public STATE state;
     protected EVENT stage;
     protected GameObject npc;
     protected Transform player;
@@ -31,13 +31,36 @@ public class StateFSM
 
     public StateFSM Process()
     {
-        if (stage == EVENT.ENTER) Enter();
+        if (stage == EVENT.ENTER)
+        {
+            Enter();
+            Debug.Log("Esse é o novo estado: " + state);
+        } 
         if (stage == EVENT.UPDATE) Update();
         if (stage == EVENT.EXIT)
         {
             Exit();
             return nextState;
         }
+        
         return this;
+    }
+
+    public bool CanSeePlayer(AIComponent aiTank, bool ignoreAngle = false)
+    {
+        Vector3 direction = player.position - npc.transform.position;
+
+        if (direction.magnitude > aiTank.visionDistance)
+        {
+            return false;
+        }
+
+        if (ignoreAngle)
+        {
+            return true;
+        }
+
+        float angle = Vector3.Angle(direction, npc.transform.forward);
+        return angle <= aiTank.visionAngle;
     }
 }

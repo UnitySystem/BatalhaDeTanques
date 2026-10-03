@@ -351,6 +351,7 @@ GameObject:
   - component: {fileID: 3451578104530567764}
   - component: {fileID: 2923558934230522277}
   - component: {fileID: 8574574976012464939}
+  - component: {fileID: 8638495404072093041}
   m_Layer: 0
   m_Name: Player
   m_TagString: tank
@@ -420,8 +421,23 @@ MonoBehaviour:
   bulletSpawn: {fileID: 287555484940650545}
   bulletPrefab: {fileID: 9162047389006064978, guid: 18d4831b417f140bf8b372c93d45cd40,
     type: 3}
+  bulletSpeed: 15
   minCannonAngle: -20
   maxCannonAngle: 5
+--- !u!114 &8638495404072093041
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8186791416124688332}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ffbe3505dd864614c93a0dfeea708608, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyHealth
+  maxHealth: 20
+  healthBarFill: {fileID: 0}
 --- !u!1 &8313715057155708527
 GameObject:
   m_ObjectHideFlags: 0

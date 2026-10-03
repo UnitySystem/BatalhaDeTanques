@@ -7,11 +7,12 @@ public class TankPatrol : StateFSM
     private AStarPathfinding pathfinding;
     private List<Node> currentPath;
     private int currentPathIndex = 0;
+    private int currentWaypointIndex = 0;
 
     public TankPatrol(GameObject _npc, Transform _player, AIComponent _aiTank, AStarPathfinding _pathfinding)
         : base(_npc, _player)
     {
-        name = STATE.Patrol;
+        state = STATE.Patrol;
         aiTank = _aiTank;
         pathfinding = _pathfinding;
     }
@@ -19,18 +20,26 @@ public class TankPatrol : StateFSM
     public override void Enter()
     {
         base.Enter();
-        RequestNewPath();
+        RequestNewPathToWaypoint();
     }
 
     public override void Update()
     {
         base.Update();
 
-        float distanceToPlayer = Vector3.Distance(npc.transform.position, player.position);
-
-        if (distanceToPlayer <= aiTank.attackRange)
+        if (CanSeePlayer(aiTank))
         {
-            nextState = new TankAttack(npc, player, aiTank, pathfinding);
+            float distanceToPlayer = Vector3.Distance(npc.transform.position, player.position);
+
+            if (distanceToPlayer <= aiTank.attackRange)
+            {
+                nextState = new TankAttack(npc, player, aiTank, pathfinding);
+            }
+            else
+            {
+                nextState = new TankChase(npc, player, aiTank, pathfinding);
+            }
+
             stage = EVENT.EXIT;
             return;
         }
@@ -38,11 +47,14 @@ public class TankPatrol : StateFSM
         MoveAlongPath();
     }
 
-    private void RequestNewPath()
+    private void RequestNewPathToWaypoint()
     {
-        if (pathfinding != null && player != null)
+        if (aiTank.patrolPoints == null || aiTank.patrolPoints.Length == 0) return;
+
+        Transform targetPoint = aiTank.patrolPoints[currentWaypointIndex];
+        if (pathfinding != null && targetPoint != null)
         {
-            currentPath = pathfinding.FindPath(npc.transform.position, player.position);
+            currentPath = pathfinding.FindPath(npc.transform.position, targetPoint.position);
             currentPathIndex = 0;
         }
     }
@@ -51,7 +63,7 @@ public class TankPatrol : StateFSM
     {
         if (currentPath == null || currentPathIndex >= currentPath.Count)
         {
-            RequestNewPath();
+            AdvanceToNextWaypoint();
             return;
         }
 
@@ -71,7 +83,20 @@ public class TankPatrol : StateFSM
         if (Vector3.Distance(npc.transform.position, targetPosition) <= aiTank.nodeReachDistance)
         {
             currentPathIndex++;
+
+            if (currentPathIndex >= currentPath.Count)
+            {
+                AdvanceToNextWaypoint();
+            }
         }
+    }
+
+    private void AdvanceToNextWaypoint()
+    {
+        if (aiTank.patrolPoints == null || aiTank.patrolPoints.Length == 0) return;
+
+        currentWaypointIndex = (currentWaypointIndex + 1) % aiTank.patrolPoints.Length;
+        RequestNewPathToWaypoint();
     }
 
     public override void Exit()

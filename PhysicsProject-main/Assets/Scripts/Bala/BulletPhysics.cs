@@ -24,6 +24,11 @@ public class BulletPhysics : MonoBehaviour
     {
         if (col.gameObject.CompareTag("tank"))
         {
+            if (col.gameObject.TryGetComponent<EnemyHealth>(out EnemyHealth component))
+            {
+                Debug.Log("machucou");
+                component.TakeDamage(0.2f);
+            }
             GameObject exp = Instantiate(explosion, transform.position, Quaternion.identity);
             Destroy(exp, 0.5f);
             Destroy(gameObject);

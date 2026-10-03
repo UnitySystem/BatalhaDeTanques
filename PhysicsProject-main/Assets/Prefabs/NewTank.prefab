@@ -77,6 +77,7 @@ GameObject:
   - component: {fileID: 5121215701307200919}
   - component: {fileID: 3823711404322893254}
   - component: {fileID: 1239326197070472565}
+  - component: {fileID: 4634806459991926538}
   m_Layer: 0
   m_Name: NewTank
   m_TagString: tank
@@ -138,15 +139,37 @@ MonoBehaviour:
   bulletSpawn: {fileID: 267172143603849752}
   enemy: {fileID: 0}
   cannon: {fileID: 720164148425595066}
+  patrolPoints:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   rotationSpeed: 2
   fireRate: 1
   attackRange: 10
   shellSpeed: 15
+  visionDistance: 15
+  visionAngle: 45
+  visionLineColor: {r: 0, g: 1, b: 0, a: 1}
   minAngle: -5
   maxAngle: 25
   moveSpeed: 5
   nodeReachDistance: 0.5
   pathfinding: {fileID: 0}
+--- !u!114 &4634806459991926538
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2982308933042274200}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ffbe3505dd864614c93a0dfeea708608, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyHealth
+  maxHealth: 10
+  healthBarFill: {fileID: 0}
 --- !u!1 &3232762035414521268
 GameObject:
   m_ObjectHideFlags: 0
