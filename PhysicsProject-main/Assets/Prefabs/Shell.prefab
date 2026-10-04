@@ -155,3 +155,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BulletPhysics
   explosion: {fileID: 195792, guid: 89e78efe92dfe5a42837b392cdb0bf9e, type: 3}
   lifetime: 3
+  explosionRadius: 3
+  maxDamage: 0.2
+  tankMask:
+    serializedVersion: 2
+    m_Bits: 256
+  impactLayer:
+    serializedVersion: 2
+    m_Bits: 640

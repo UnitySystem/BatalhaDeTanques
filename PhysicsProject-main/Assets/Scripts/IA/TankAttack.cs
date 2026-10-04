@@ -1,3 +1,4 @@
+using System.Xml.Linq;
 using UnityEngine;
 
 public class TankAttack : StateFSM
@@ -25,13 +26,24 @@ public class TankAttack : StateFSM
 
         float distanceToPlayer = Vector3.Distance(npc.transform.position, player.position);
 
+        // 1. Se o jogador sair do alcance de ataque, volta a perseguir usando A*
         if (distanceToPlayer > aiTank.attackRange)
         {
-            nextState = new TankPatrol(npc, player, aiTank, pathfinding);
+            nextState = new TankChase(npc, player, aiTank, pathfinding);
             stage = EVENT.EXIT;
             return;
         }
 
+        // 2. Se houver obstáculo bloqueando a visão (Line of Sight), 
+        // transiciona para TankChase para recalcular a rota via A* e contornar a parede
+        if (!CanSeePlayer(aiTank))
+        {
+            nextState = new TankChase(npc, player, aiTank, pathfinding);
+            stage = EVENT.EXIT;
+            return;
+        }
+
+        // 3. Se estiver no alcance e com linha de visão livre, ajusta o canhão e dispara
         float? angle = RotateCannon();
 
         if (angle != null)

@@ -46,21 +46,23 @@ public class StateFSM
         return this;
     }
 
-    public bool CanSeePlayer(AIComponent aiTank, bool ignoreAngle = false)
+    public bool CanSeePlayer(AIComponent aiTank)
     {
-        Vector3 direction = player.position - npc.transform.position;
+        Vector3 origin = npc.transform.position + Vector3.up * 1.5f; // Altura do canhão/visão
+        Vector3 target = player.position + Vector3.up * 1.0f;
+        Vector3 direction = (target - origin).normalized;
+        float distance = Vector3.Distance(origin, target);
 
-        if (direction.magnitude > aiTank.visionDistance)
+        // Lança o raio até a distância do jogador
+        if (Physics.Raycast(origin, direction, out RaycastHit hit, distance))
         {
-            return false;
+            // Se colidiu diretamente com o jogador (ou com algo cujo root seja o jogador)
+            if (hit.transform == player || hit.transform.root == player)
+            {
+                return true; // Visão limpa!
+            }
         }
 
-        if (ignoreAngle)
-        {
-            return true;
-        }
-
-        float angle = Vector3.Angle(direction, npc.transform.forward);
-        return angle <= aiTank.visionAngle;
+        return false; // Existe um obstáculo bloqueando a visão
     }
 }
