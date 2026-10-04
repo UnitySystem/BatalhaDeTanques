@@ -11,6 +11,9 @@ public class TankChase : StateFSM
     private float lostVisionTimer = 0f;
     private float maxLostVisionTime = 2.0f;
 
+    /// <summary>
+    /// Construtor que inicializa o estado de perseguição configurando o agente e parâmetros de busca
+    /// </summary>
     public TankChase(GameObject _npc, Transform _player, AIComponent _aiTank, AStarPathfinding _pathfinding)
         : base(_npc, _player)
     {
@@ -19,6 +22,9 @@ public class TankChase : StateFSM
         pathfinding = _pathfinding;
     }
 
+    /// <summary>
+    /// Prepara o estado zerando o temporizador de perda de visão e solicitando uma rota inicial
+    /// </summary>
     public override void Enter()
     {
         base.Enter();
@@ -26,6 +32,9 @@ public class TankChase : StateFSM
         RequestNewPath();
     }
 
+    /// <summary>
+    /// Conduz a movimentação em direção ao alvo e gerencia transições para ataque ou patrulha
+    /// </summary>
     public override void Update()
     {
         base.Update();
@@ -58,12 +67,18 @@ public class TankChase : StateFSM
         MoveAlongPath();
     }
 
+    /// <summary>
+    /// Solicita ao algoritmo A* um novo caminho até a posição atual do jogador
+    /// </summary>
     private void RequestNewPath()
     {
         currentPath = pathfinding.FindPath(npc.transform.position, player.position);
         currentPathIndex = 0;
     }
 
+    /// <summary>
+    /// Move e rotaciona o tanque gradualmente pelos nós do caminho calculado
+    /// </summary>
     private void MoveAlongPath()
     {
         if (currentPath == null || currentPathIndex >= currentPath.Count)
@@ -91,6 +106,9 @@ public class TankChase : StateFSM
         }
     }
 
+    /// <summary>
+    /// Executa a rotina de encerramento ao sair do estado de perseguição
+    /// </summary>
     public override void Exit()
     {
         base.Exit();

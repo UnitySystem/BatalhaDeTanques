@@ -37,6 +37,9 @@ public class AIComponent : MonoBehaviour
     [Header("Estado Atual")]
     [SerializeField] private StateFSM currentState;
 
+    /// <summary>
+    /// Configura os componentes necessários e inicializa a máquina de estados com o estado de patrulha
+    /// </summary>
     private void Start()
     {
         if (pathfinding == null)
@@ -50,11 +53,17 @@ public class AIComponent : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Executa e atualiza a lógica da máquina de estados do agente inteligente a cada frame
+    /// </summary>
     private void Update()
     {
         currentState = currentState.Process();
     }
 
+    /// <summary>
+    /// Desenha o campo de visão e o raio de alcance de ataque na janela de cena
+    /// </summary>
     private void OnDrawGizmosSelected()
     {
         Vector3 origin = transform.position;

@@ -762,6 +762,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4634806459991926538, guid: 2a689501ac495b247b7da697b199f635,
         type: 3}
+      propertyPath: explosion
+      value: 
+      objectReference: {fileID: 195792, guid: 89e78efe92dfe5a42837b392cdb0bf9e, type: 3}
+    - target: {fileID: 4634806459991926538, guid: 2a689501ac495b247b7da697b199f635,
+        type: 3}
       propertyPath: maxHealth
       value: 1
       objectReference: {fileID: 0}
@@ -1089,6 +1094,11 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 8
       objectReference: {fileID: 0}
+    - target: {fileID: 4634806459991926538, guid: 2a689501ac495b247b7da697b199f635,
+        type: 3}
+      propertyPath: explosion
+      value: 
+      objectReference: {fileID: 195792, guid: 89e78efe92dfe5a42837b392cdb0bf9e, type: 3}
     - target: {fileID: 4634806459991926538, guid: 2a689501ac495b247b7da697b199f635,
         type: 3}
       propertyPath: maxHealth
@@ -3614,6 +3624,11 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 8
       objectReference: {fileID: 0}
+    - target: {fileID: 4634806459991926538, guid: 2a689501ac495b247b7da697b199f635,
+        type: 3}
+      propertyPath: explosion
+      value: 
+      objectReference: {fileID: 195792, guid: 89e78efe92dfe5a42837b392cdb0bf9e, type: 3}
     - target: {fileID: 4634806459991926538, guid: 2a689501ac495b247b7da697b199f635,
         type: 3}
       propertyPath: maxHealth
@@ -6407,6 +6422,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4634806459991926538, guid: 2a689501ac495b247b7da697b199f635,
         type: 3}
+      propertyPath: explosion
+      value: 
+      objectReference: {fileID: 195792, guid: 89e78efe92dfe5a42837b392cdb0bf9e, type: 3}
+    - target: {fileID: 4634806459991926538, guid: 2a689501ac495b247b7da697b199f635,
+        type: 3}
       propertyPath: maxHealth
       value: 1
       objectReference: {fileID: 0}
@@ -6598,6 +6618,11 @@ PrefabInstance:
       propertyPath: maxCannonAngle
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 8638495404072093041, guid: a5c9a90337be5394986b3760a41a6a28,
+        type: 3}
+      propertyPath: explosion
+      value: 
+      objectReference: {fileID: 195792, guid: 89e78efe92dfe5a42837b392cdb0bf9e, type: 3}
     - target: {fileID: 8638495404072093041, guid: a5c9a90337be5394986b3760a41a6a28,
         type: 3}
       propertyPath: maxHealth

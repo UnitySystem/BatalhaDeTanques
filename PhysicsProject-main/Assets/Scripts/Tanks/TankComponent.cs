@@ -24,6 +24,9 @@ public class TankComponent : MonoBehaviour
     public float maxCannonAngle = 45f;
     private float currentCannonRotationX = 0f;
 
+    /// <summary>
+    /// Habilita as ações de entrada de movimento e rotação quando o componente é ativado
+    /// </summary>
     private void OnEnable()
     {
         if (moveAction != null) moveAction.action.Enable();
@@ -31,6 +34,9 @@ public class TankComponent : MonoBehaviour
         if (rotateDown != null) rotateDown.action.Enable();
     }
 
+    /// <summary>
+    /// Desabilita as ações de entrada de movimento e rotação quando o componente é desativado
+    /// </summary>
     private void OnDisable()
     {
         if (moveAction != null) moveAction.action.Disable();
@@ -38,6 +44,9 @@ public class TankComponent : MonoBehaviour
         if (rotateDown != null) rotateDown.action.Disable();
     }
 
+    /// <summary>
+    /// Processa o controle de movimento do tanque, rotação do canhão e disparos a cada frame
+    /// </summary>
     private void Update()
     {
         HandleMovement();
@@ -45,6 +54,9 @@ public class TankComponent : MonoBehaviour
         HandleShooting();
     }
 
+    /// <summary>
+    /// Lê as entradas do jogador para realizar a translação e rotação do tanque
+    /// </summary>
     private void HandleMovement()
     {
         if (moveAction == null) return;
@@ -63,6 +75,9 @@ public class TankComponent : MonoBehaviour
         transform.Rotate(0, rotation, 0);
     }
 
+    /// <summary>
+    /// Ajusta a inclinação vertical do canhão com base nas entradas e aplica limites de ângulo
+    /// </summary>
     private void HandleCannonRotation()
     {
         if (cannon == null) return;
@@ -87,6 +102,9 @@ public class TankComponent : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Instancia um projétil e aplica velocidade na direção do ponto de disparo ao clicar no botão esquerdo do mouse
+    /// </summary>
     private void HandleShooting()
     {
         if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)

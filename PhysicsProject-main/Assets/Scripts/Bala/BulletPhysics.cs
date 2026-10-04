@@ -15,12 +15,18 @@ public class BulletPhysics : MonoBehaviour
 
     private Rigidbody body;
 
+    /// <summary>
+    /// Inicializa a referência do Rigidbody e agenda a destruição automática do projétil
+    /// </summary>
     private void Start()
     {
         body = GetComponent<Rigidbody>();
         Destroy(gameObject, lifetime);
     }
 
+    /// <summary>
+    /// Orienta a rotação do projétil na direção do seu vetor de velocidade a cada frame
+    /// </summary>
     private void Update()
     {
         if (body != null && body.linearVelocity != Vector3.zero)
@@ -29,11 +35,12 @@ public class BulletPhysics : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Detecta a colisão do projétil e aciona a explosão se atingir uma camada ou tag válida
+    /// </summary>
     private void OnCollisionEnter(Collision collision)
     {
-        // 1. Verifica se a camada (Layer) do objeto colidido está selecionada na impactLayer
         bool isImpactLayer = ((1 << collision.gameObject.layer) & impactLayer) != 0;
-
         bool isImpactTag = collision.gameObject.CompareTag("tank");
 
         if (isImpactLayer || isImpactTag)
@@ -42,6 +49,9 @@ public class BulletPhysics : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Instancia os efeitos da explosão, calcula e aplica o dano em área nas unidades atingidas
+    /// </summary>
     private void Explode()
     {
         GameObject exp = Instantiate(explosion, transform.position, Quaternion.identity);
@@ -63,10 +73,12 @@ public class BulletPhysics : MonoBehaviour
             }
         }
 
-        // Destrói a bala após o impacto
         Destroy(gameObject);
     }
 
+    /// <summary>
+    /// Exibe o raio de explosão do projétil na janela de cena quando o objeto está selecionado
+    /// </summary>
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;

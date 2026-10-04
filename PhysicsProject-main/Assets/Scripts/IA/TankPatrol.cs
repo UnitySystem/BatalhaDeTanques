@@ -9,6 +9,9 @@ public class TankPatrol : StateFSM
     private int currentPathIndex = 0;
     private int currentWaypointIndex = 0;
 
+    /// <summary>
+    /// Construtor que inicializa o estado de patrulha com os nós e pontos de patrulha cadastrados
+    /// </summary>
     public TankPatrol(GameObject _npc, Transform _player, AIComponent _aiTank, AStarPathfinding _pathfinding)
         : base(_npc, _player)
     {
@@ -17,12 +20,18 @@ public class TankPatrol : StateFSM
         pathfinding = _pathfinding;
     }
 
+    /// <summary>
+    /// Inicializa a rotina de patrulha solicitando a primeira rota até o ponto de interesse
+    /// </summary>
     public override void Enter()
     {
         base.Enter();
         RequestNewPathToWaypoint();
     }
 
+    /// <summary>
+    /// Controla a movimentação de patrulha e verifica a presença do jogador para realizar transições
+    /// </summary>
     public override void Update()
     {
         base.Update();
@@ -47,6 +56,9 @@ public class TankPatrol : StateFSM
         MoveAlongPath();
     }
 
+    /// <summary>
+    /// Calcula um caminho via A* da posição do agente até o próximo ponto de patrulha
+    /// </summary>
     private void RequestNewPathToWaypoint()
     {
         if (aiTank.patrolPoints == null || aiTank.patrolPoints.Length == 0) return;
@@ -59,6 +71,9 @@ public class TankPatrol : StateFSM
         }
     }
 
+    /// <summary>
+    /// Conduz a movimentação e rotação do tanque ao longo dos nós da rota de patrulha
+    /// </summary>
     private void MoveAlongPath()
     {
         if (currentPath == null || currentPathIndex >= currentPath.Count)
@@ -91,6 +106,9 @@ public class TankPatrol : StateFSM
         }
     }
 
+    /// <summary>
+    /// Atualiza o índice para o próximo ponto da lista de patrulha e solicita uma nova rota
+    /// </summary>
     private void AdvanceToNextWaypoint()
     {
         if (aiTank.patrolPoints == null || aiTank.patrolPoints.Length == 0) return;
@@ -99,6 +117,9 @@ public class TankPatrol : StateFSM
         RequestNewPathToWaypoint();
     }
 
+    /// <summary>
+    /// Executa os procedimentos de finalização ao sair do estado de patrulha
+    /// </summary>
     public override void Exit()
     {
         base.Exit();

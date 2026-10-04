@@ -4,6 +4,10 @@ using UnityEngine;
 public class AStarPathfinding : MonoBehaviour
 {
     public GridManager gridManager;
+
+    /// <summary>
+    /// Encontra um caminho entre duas posições no mundo convertendo-as para nós do grid
+    /// </summary>
     public List<Node> FindPath(Vector3 startPos, Vector3 targetPos)
     {
         if (gridManager == null)
@@ -17,6 +21,10 @@ public class AStarPathfinding : MonoBehaviour
 
         return FindPath(startNode, targetNode);
     }
+
+    /// <summary>
+    /// Calcula o menor caminho entre o nó inicial e o nó de destino utilizando o algoritmo A*
+    /// </summary>
     public List<Node> FindPath(Node startNode, Node targetNode)
     {
         if (startNode == null || targetNode == null) return null;
@@ -29,7 +37,6 @@ public class AStarPathfinding : MonoBehaviour
 
         while (openSet.Count > 0)
         {
-            // Seleciona o nó na Open List com o menor FCost (ou menor hCost em caso de empate)
             Node currentNode = openSet[0];
             for (int i = 1; i < openSet.Count; i++)
             {
@@ -43,18 +50,15 @@ public class AStarPathfinding : MonoBehaviour
             openSet.Remove(currentNode);
             closedSet.Add(currentNode);
 
-            // Chegou ao objetivo
             if (currentNode == targetNode)
             {
                 return RetracePath(startNode, targetNode);
             }
 
-            // Avalia cada vizinho do nó atual
             foreach (Node neighbor in currentNode.neighbors)
             {
                 if (!neighbor.isWalkable || closedSet.Contains(neighbor)) continue;
 
-                // Custo do movimento para o vizinho (distância física)
                 float newCostToNeighbor = currentNode.gCost + Vector3.Distance(currentNode.WorldPosition, neighbor.WorldPosition);
 
                 if (newCostToNeighbor < neighbor.gCost || !openSet.Contains(neighbor))
@@ -71,15 +75,17 @@ public class AStarPathfinding : MonoBehaviour
             }
         }
 
-        return null; // Caminho não encontrado
+        return null;
     }
 
+    /// <summary>
+    /// Reconstrói o caminho percorrido do nó final ao inicial seguindo a hierarquia de nós pais
+    /// </summary>
     private List<Node> RetracePath(Node startNode, Node endNode)
     {
         List<Node> path = new List<Node>();
         Node currentNode = endNode;
 
-        // Reconstrói o caminho seguindo a cadeia de pais (parent) até a origem
         while (currentNode != startNode)
         {
             path.Add(currentNode);
@@ -87,7 +93,7 @@ public class AStarPathfinding : MonoBehaviour
         }
 
         path.Add(startNode);
-        path.Reverse(); // Inverte para obter a ordem do início ao fim
+        path.Reverse();
 
         return path;
     }

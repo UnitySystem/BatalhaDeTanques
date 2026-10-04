@@ -7,6 +7,9 @@ public class TankAttack : StateFSM
     private AStarPathfinding pathfinding;
     private float nextFireTime = 0f;
 
+    /// <summary>
+    /// Construtor que inicializa o estado de ataque com as referências do tanque e sistema de caminhos
+    /// </summary>
     public TankAttack(GameObject _npc, Transform _player, AIComponent _aiTank, AStarPathfinding _pathfinding)
         : base(_npc, _player)
     {
@@ -15,18 +18,23 @@ public class TankAttack : StateFSM
         pathfinding = _pathfinding;
     }
 
+    /// <summary>
+    /// Executa os procedimentos necessários ao entrar no estado de ataque
+    /// </summary>
     public override void Enter()
     {
         base.Enter();
     }
 
+    /// <summary>
+    /// Monitora a distância e linha de visão do alvo, ajusta a mira e efetua disparos periodicamente
+    /// </summary>
     public override void Update()
     {
         base.Update();
 
         float distanceToPlayer = Vector3.Distance(npc.transform.position, player.position);
 
-        // 1. Se o jogador sair do alcance de ataque, volta a perseguir usando A*
         if (distanceToPlayer > aiTank.attackRange)
         {
             nextState = new TankChase(npc, player, aiTank, pathfinding);
@@ -34,8 +42,6 @@ public class TankAttack : StateFSM
             return;
         }
 
-        // 2. Se houver obstáculo bloqueando a visão (Line of Sight), 
-        // transiciona para TankChase para recalcular a rota via A* e contornar a parede
         if (!CanSeePlayer(aiTank))
         {
             nextState = new TankChase(npc, player, aiTank, pathfinding);
@@ -43,7 +49,6 @@ public class TankAttack : StateFSM
             return;
         }
 
-        // 3. Se estiver no alcance e com linha de visão livre, ajusta o canhão e dispara
         float? angle = RotateCannon();
 
         if (angle != null)
@@ -59,12 +64,18 @@ public class TankAttack : StateFSM
         }
     }
 
+    /// <summary>
+    /// Instancia o projétil no ponto de disparo e atribui a velocidade inicial
+    /// </summary>
     private void CreateBullet()
     {
         GameObject shell = Object.Instantiate(aiTank.bulletPrefab, aiTank.bulletSpawn.transform.position, aiTank.bulletSpawn.transform.rotation);
         shell.GetComponent<Rigidbody>().linearVelocity = aiTank.shellSpeed * aiTank.cannon.forward;
     }
 
+    /// <summary>
+    /// Calcula a elevação balística e ajusta a rotação local do canhão em direção ao alvo
+    /// </summary>
     private float? RotateCannon()
     {
         float? angle = CalculateAngle(true);
@@ -81,6 +92,9 @@ public class TankAttack : StateFSM
         return angle;
     }
 
+    /// <summary>
+    /// Realiza a equação de trajetória parabólica para determinar o ângulo de lançamento necessário
+    /// </summary>
     private float? CalculateAngle(bool low)
     {
         Vector3 targetDir = player.position - npc.transform.position;
@@ -103,6 +117,9 @@ public class TankAttack : StateFSM
         return null;
     }
 
+    /// <summary>
+    /// Executa os procedimentos necessários ao encerrar o estado de ataque
+    /// </summary>
     public override void Exit()
     {
         base.Exit();

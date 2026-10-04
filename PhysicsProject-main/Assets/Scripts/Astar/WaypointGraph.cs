@@ -22,18 +22,22 @@ public class GridManager : MonoBehaviour
 
     private Node[,] grid;
 
+    /// <summary>
+    /// Inicializa a criação do grid ao iniciar a execução do jogo
+    /// </summary>
     private void Awake()
     {
-        // Instancia os GameObjects de fato APENAS na inicialização do jogo
         GenerateGrid();
     }
 
+    /// <summary>
+    /// Instancia a estrutura de nós na cena e estabelece a conexão entre os vizinhos válidos
+    /// </summary>
     public void GenerateGrid()
     {
         grid = new Node[gridSizeX, gridSizeY];
         Vector3 origin = transform.position;
 
-        // 1. Instanciação e Mapeamento dos Nós na Matriz (X, Y)
         for (int x = 0; x < gridSizeX; x++)
         {
             for (int y = 0; y < gridSizeY; y++)
@@ -65,7 +69,6 @@ public class GridManager : MonoBehaviour
             }
         }
 
-        // 2. Conectar Vizinhos por Índice da Matriz
         for (int x = 0; x < gridSizeX; x++)
         {
             for (int y = 0; y < gridSizeY; y++)
@@ -99,6 +102,9 @@ public class GridManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Retorna o nó do grid mais próximo com base em uma posição do mundo informada
+    /// </summary>
     public Node GetClosestNode(Vector3 worldPosition)
     {
         if (grid == null) return null;
@@ -114,14 +120,15 @@ public class GridManager : MonoBehaviour
         return grid[x, y];
     }
 
-    // Desenha uma prévia no Scene View SEM instanciar nenhum GameObject no Editor
+    /// <summary>
+    /// Desenha a representação visual do grid e o estado dos nós diretamente na janela da cena
+    /// </summary>
     private void OnDrawGizmos()
     {
         if (!drawGizmos) return;
 
         Vector3 origin = transform.position;
 
-        // Desenha a simulação dos nós diretamente no Editor
         for (int x = 0; x < gridSizeX; x++)
         {
             for (int y = 0; y < gridSizeY; y++)
