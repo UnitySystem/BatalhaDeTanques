@@ -39,7 +39,7 @@ public class TankChase : StateFSM
             return;
         }
 
-        if (!CanSeePlayer(aiTank, true))
+        if (!CanSeePlayer(aiTank))
         {
             lostVisionTimer += Time.deltaTime;
 
