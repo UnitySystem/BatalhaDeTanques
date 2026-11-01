@@ -24,6 +24,17 @@ public class TankComponent : MonoBehaviour
     public float maxCannonAngle = 45f;
     private float currentCannonRotationX = 0f;
 
+    private Rigidbody rb;
+
+    private void Awake()
+    {
+        rb = GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            rb.freezeRotation = true;
+        }
+    }
+
     private void OnEnable()
     {
         if (moveAction != null) moveAction.action.Enable();
@@ -38,29 +49,36 @@ public class TankComponent : MonoBehaviour
         if (rotateDown != null) rotateDown.action.Disable();
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         HandleMovement();
+    }
+
+    private void Update()
+    {
         HandleCannonRotation();
         HandleShooting();
     }
 
     private void HandleMovement()
     {
-        if (moveAction == null) return;
+        if (moveAction == null || rb == null) return;
 
         Vector2 moveInput = moveAction.action.ReadValue<Vector2>();
 
-        float translation = moveInput.y * speed * Time.deltaTime;
-        float rotation = moveInput.x * rotationSpeed * Time.deltaTime;
+        float translation = moveInput.y * speed * Time.fixedDeltaTime;
+        float rotation = moveInput.x * rotationSpeed * Time.fixedDeltaTime;
 
         if (invertRotationWhenBackingUp && moveInput.y < 0)
         {
             rotation = -rotation;
         }
 
-        transform.Translate(0, 0, translation);
-        transform.Rotate(0, rotation, 0);
+        Vector3 moveDelta = transform.forward * translation;
+        rb.MovePosition(rb.position + moveDelta);
+
+        Quaternion turnOffset = Quaternion.Euler(0f, rotation, 0f);
+        rb.MoveRotation(rb.rotation * turnOffset);
     }
 
     private void HandleCannonRotation()
@@ -94,9 +112,9 @@ public class TankComponent : MonoBehaviour
             if (bulletPrefab != null && bulletSpawn != null)
             {
                 GameObject shell = Instantiate(bulletPrefab, bulletSpawn.position, bulletSpawn.rotation);
-                if (shell.TryGetComponent<Rigidbody>(out Rigidbody rb))
+                if (shell.TryGetComponent<Rigidbody>(out Rigidbody shellRb))
                 {
-                    rb.linearVelocity = bulletSpawn.forward * bulletSpeed;
+                    shellRb.linearVelocity = bulletSpawn.forward * bulletSpeed;
                 }
             }
         }
