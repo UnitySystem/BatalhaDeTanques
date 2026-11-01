@@ -39,6 +39,7 @@ public class EnemyHealth : MonoBehaviour
 
     private void Die()
     {
+        StateGameplay.Instance.IncreadeDeathTanks(1);
         Destroy(gameObject);
     }
 }

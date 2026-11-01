@@ -168,7 +168,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffbe3505dd864614c93a0dfeea708608, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyHealth
-  maxHealth: 10
+  maxHealth: 1
+  currentHealth: 0
   healthBarFill: {fileID: 0}
 --- !u!1 &3232762035414521268
 GameObject:

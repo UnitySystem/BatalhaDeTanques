@@ -351,7 +351,7 @@ GameObject:
   - component: {fileID: 3451578104530567764}
   - component: {fileID: 2923558934230522277}
   - component: {fileID: 8574574976012464939}
-  - component: {fileID: 8638495404072093041}
+  - component: {fileID: 186725295151573278}
   m_Layer: 0
   m_Name: Player
   m_TagString: tank
@@ -424,7 +424,7 @@ MonoBehaviour:
   bulletSpeed: 15
   minCannonAngle: -20
   maxCannonAngle: 5
---- !u!114 &8638495404072093041
+--- !u!114 &186725295151573278
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -433,10 +433,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 8186791416124688332}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ffbe3505dd864614c93a0dfeea708608, type: 3}
+  m_Script: {fileID: 11500000, guid: c89fde37dc27beb4b817e6fe5f221bc5, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyHealth
-  maxHealth: 20
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerHealth
+  maxHealth: 2
+  currentHealth: 0
   healthBarFill: {fileID: 0}
 --- !u!1 &8313715057155708527
 GameObject:

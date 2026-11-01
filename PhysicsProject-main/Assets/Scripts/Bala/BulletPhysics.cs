@@ -51,16 +51,19 @@ public class BulletPhysics : MonoBehaviour
 
         foreach (Collider hit in hitColliders)
         {
-            EnemyHealth health = hit.GetComponentInParent<EnemyHealth>();
-
-            if (health != null)
+            float distance = Vector3.Distance(transform.position, hit.transform.position);
+            float damageMultiplier = Mathf.Clamp01(1f - (distance / explosionRadius));
+            float calculatedDamage = maxDamage * damageMultiplier;
+            
+            if (hit.TryGetComponent<PlayerHealth>(out PlayerHealth playerHealth)) 
             {
-                float distance = Vector3.Distance(transform.position, hit.transform.position);
-                float damageMultiplier = Mathf.Clamp01(1f - (distance / explosionRadius));
-                float calculatedDamage = maxDamage * damageMultiplier;
-
-                health.TakeDamage(calculatedDamage);
+                playerHealth.TakeDamage(calculatedDamage);
             }
+            else if (hit.TryGetComponent<EnemyHealth>(out EnemyHealth enemyHealth))
+            {
+                enemyHealth.TakeDamage(calculatedDamage);
+            }
+
         }
 
         // Destrói a bala após o impacto
