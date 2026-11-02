@@ -1092,7 +1092,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7cdd1639fb5826144bd43099943052a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Uicontrole
-  SceneName: Gameplay
+  SceneName: Login
 --- !u!114 &1800918145
 MonoBehaviour:
   m_ObjectHideFlags: 0

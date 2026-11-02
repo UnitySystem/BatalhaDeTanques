@@ -40,6 +40,19 @@ public class PlayerHealth : MonoBehaviour
 
     private void Die()
     {
+        // Calcula os pontos obtidos com base nos inimigos que ele conseguiu matar antes de morrer
+        int pontosIncompletos = 0;
+        if (StateGameplay.Instance != null)
+        {
+            pontosIncompletos = StateGameplay.Instance.TotalDeathTanks * 10;
+        }
+
+        // O jogador perdeu! Envia os dados para o PHP (venceu = false)
+        if (FindObjectOfType<MatchManager>() != null)
+        {
+            FindObjectOfType<MatchManager>().FinalizarPartida(pontosIncompletos, false);
+        }
+
         SceneManager.LoadScene("Derrota");
     }
 }
