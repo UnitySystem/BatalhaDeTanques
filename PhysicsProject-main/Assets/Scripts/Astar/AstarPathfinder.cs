@@ -1,9 +1,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Implementa o algoritmo de busca de caminhos A* (A-Star) para calcular 
+/// a rota mais eficiente entre dois pontos num grid de nós.
+/// </summary>
 public class AStarPathfinding : MonoBehaviour
 {
+    [Tooltip("Referência ao gestor do grid responsável por mapear os nós do mapa.")]
     public GridManager gridManager;
+
+    /// <summary>
+    /// Calcula o caminho entre duas posições baseadas em coordenadas do mundo (Vector3).
+    /// Converte as posições físicas para os nós mais próximos no grid.
+    /// </summary>
     public List<Node> FindPath(Vector3 startPos, Vector3 targetPos)
     {
         if (gridManager == null)
@@ -17,6 +27,11 @@ public class AStarPathfinding : MonoBehaviour
 
         return FindPath(startNode, targetNode);
     }
+
+    /// <summary>
+    /// Executa o algoritmo A* entre um nó inicial e um nó de destino específicos.
+    /// Utiliza uma lista aberta (openSet) e fechada (closedSet) para avaliar custos F, G e H.
+    /// </summary>
     public List<Node> FindPath(Node startNode, Node targetNode)
     {
         if (startNode == null || targetNode == null) return null;
@@ -43,7 +58,7 @@ public class AStarPathfinding : MonoBehaviour
             openSet.Remove(currentNode);
             closedSet.Add(currentNode);
 
-            // Chegou ao objetivo
+            // Verifica se o objetivo foi alcançado
             if (currentNode == targetNode)
             {
                 return RetracePath(startNode, targetNode);
@@ -54,7 +69,7 @@ public class AStarPathfinding : MonoBehaviour
             {
                 if (!neighbor.isWalkable || closedSet.Contains(neighbor)) continue;
 
-                // Custo do movimento para o vizinho (distância física)
+                // Calcula o custo acumulado de movimento até ao vizinho
                 float newCostToNeighbor = currentNode.gCost + Vector3.Distance(currentNode.WorldPosition, neighbor.WorldPosition);
 
                 if (newCostToNeighbor < neighbor.gCost || !openSet.Contains(neighbor))
@@ -71,15 +86,18 @@ public class AStarPathfinding : MonoBehaviour
             }
         }
 
-        return null; // Caminho não encontrado
+        return null; // Retorna nulo caso nenhum caminho seja encontrado
     }
 
+    /// <summary>
+    /// Reconstrói o caminho percorrido a partir do nó de destino, 
+    /// seguindo a cadeia de referências parentais até à origem.
+    /// </summary>
     private List<Node> RetracePath(Node startNode, Node endNode)
     {
         List<Node> path = new List<Node>();
         Node currentNode = endNode;
 
-        // Reconstrói o caminho seguindo a cadeia de pais (parent) até a origem
         while (currentNode != startNode)
         {
             path.Add(currentNode);
@@ -87,7 +105,7 @@ public class AStarPathfinding : MonoBehaviour
         }
 
         path.Add(startNode);
-        path.Reverse(); // Inverte para obter a ordem do início ao fim
+        path.Reverse(); // Inverte para ordenar do início até ao fim
 
         return path;
     }

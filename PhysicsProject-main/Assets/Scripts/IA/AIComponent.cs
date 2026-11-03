@@ -1,5 +1,9 @@
 using UnityEngine;
 
+/// <summary>
+/// Componente central do tanque inimigo inteligente, gerindo parâmetros de IA, 
+/// visão, patrulha e o ciclo de execução da Máquina de Estados Finitos (FSM).
+/// </summary>
 public class AIComponent : MonoBehaviour
 {
     [Header("Objetos")]
@@ -37,6 +41,9 @@ public class AIComponent : MonoBehaviour
     [Header("Estado Atual")]
     [SerializeField] private StateFSM currentState;
 
+    /// <summary>
+    /// Inicializa as referências de pathfinding e define o estado inicial de patrulha da IA.
+    /// </summary>
     private void Start()
     {
         if (pathfinding == null)
@@ -50,11 +57,17 @@ public class AIComponent : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Processa o ciclo de atualização da máquina de estados do inimigo a cada frame.
+    /// </summary>
     private void Update()
     {
         currentState = currentState.Process();
     }
 
+    /// <summary>
+    /// Desenha os gizmos visuais de visão e alcance de ataque no editor do Unity.
+    /// </summary>
     private void OnDrawGizmosSelected()
     {
         Vector3 origin = transform.position;

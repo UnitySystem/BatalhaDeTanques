@@ -1,6 +1,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Estado de patrulha da FSM: faz o NPC movimentar-se entre waypoints predefinidos 
+/// utilizando o sistema A* e vigiar a presença do jogador.
+/// </summary>
 public class TankPatrol : StateFSM
 {
     private AIComponent aiTank;
@@ -9,6 +13,9 @@ public class TankPatrol : StateFSM
     private int currentPathIndex = 0;
     private int currentWaypointIndex = 0;
 
+    /// <summary>
+    /// Construtor do estado de patrulha.
+    /// </summary>
     public TankPatrol(GameObject _npc, Transform _player, AIComponent _aiTank, AStarPathfinding _pathfinding)
         : base(_npc, _player)
     {
@@ -17,12 +24,18 @@ public class TankPatrol : StateFSM
         pathfinding = _pathfinding;
     }
 
+    /// <summary>
+    /// Solicita o primeiro caminho até ao waypoint de patrulha ao entrar no estado.
+    /// </summary>
     public override void Enter()
     {
         base.Enter();
         RequestNewPathToWaypoint();
     }
 
+    /// <summary>
+    /// Vigia a presença do jogador e gere a movimentação de patrulha ao longo dos nós.
+    /// </summary>
     public override void Update()
     {
         base.Update();
@@ -47,6 +60,7 @@ public class TankPatrol : StateFSM
         MoveAlongPath();
     }
 
+    /// <summary>Gera o caminho via A* até ao waypoint de patrulha ativo.</summary>
     private void RequestNewPathToWaypoint()
     {
         if (aiTank.patrolPoints == null || aiTank.patrolPoints.Length == 0) return;
@@ -59,6 +73,7 @@ public class TankPatrol : StateFSM
         }
     }
 
+    /// <summary>Move o NPC ao longo do caminho gerado até ao waypoint atual de patrulha.</summary>
     private void MoveAlongPath()
     {
         if (currentPath == null || currentPathIndex >= currentPath.Count)
@@ -91,6 +106,7 @@ public class TankPatrol : StateFSM
         }
     }
 
+    /// <summary>Avança para o índice do próximo waypoint na lista de patrulha.</summary>
     private void AdvanceToNextWaypoint()
     {
         if (aiTank.patrolPoints == null || aiTank.patrolPoints.Length == 0) return;
@@ -99,6 +115,7 @@ public class TankPatrol : StateFSM
         RequestNewPathToWaypoint();
     }
 
+    /// <summary>Ações executadas ao sair do estado de patrulha.</summary>
     public override void Exit()
     {
         base.Exit();

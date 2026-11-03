@@ -1,6 +1,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Estado de perseguição da FSM: utiliza o algoritmo A* para guiar o NPC 
+/// em direção ao jogador em tempo real.
+/// </summary>
 public class TankChase : StateFSM
 {
     private AIComponent aiTank;
@@ -11,6 +15,9 @@ public class TankChase : StateFSM
     private float lostVisionTimer = 0f;
     private float maxLostVisionTime = 2.0f;
 
+    /// <summary>
+    /// Construtor do estado de perseguição.
+    /// </summary>
     public TankChase(GameObject _npc, Transform _player, AIComponent _aiTank, AStarPathfinding _pathfinding)
         : base(_npc, _player)
     {
@@ -19,6 +26,9 @@ public class TankChase : StateFSM
         pathfinding = _pathfinding;
     }
 
+    /// <summary>
+    /// Inicializa o temporizador de visão e solicita o primeiro caminho via A*.
+    /// </summary>
     public override void Enter()
     {
         base.Enter();
@@ -26,6 +36,9 @@ public class TankChase : StateFSM
         RequestNewPath();
     }
 
+    /// <summary>
+    /// Atualiza a lógica de perseguição, checa transições para ataque ou patrulha.
+    /// </summary>
     public override void Update()
     {
         base.Update();
@@ -58,12 +71,14 @@ public class TankChase : StateFSM
         MoveAlongPath();
     }
 
+    /// <summary>Solicita o cálculo de um novo caminho ao sistema A* até à posição atual do jogador.</summary>
     private void RequestNewPath()
     {
         currentPath = pathfinding.FindPath(npc.transform.position, player.position);
         currentPathIndex = 0;
     }
 
+    /// <summary>Move o NPC sequencialmente ao longo dos nós calculados pelo A*.</summary>
     private void MoveAlongPath()
     {
         if (currentPath == null || currentPathIndex >= currentPath.Count)
@@ -91,6 +106,7 @@ public class TankChase : StateFSM
         }
     }
 
+    /// <summary>Ações executadas ao sair do estado de perseguição.</summary>
     public override void Exit()
     {
         base.Exit();

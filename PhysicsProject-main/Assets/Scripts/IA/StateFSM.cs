@@ -1,10 +1,14 @@
 using UnityEngine;
 
+/// <summary>
+/// Classe base para a Máquina de Estados Finitos (FSM) dos agentes inteligentes, 
+/// gerindo ciclos de vida de estados e deteção de linha de visão (Line of Sight).
+/// </summary>
 public class StateFSM
 {
     public enum STATE
     {
-        Patrol,Chase,Attack
+        Patrol, Chase, Attack
     };
 
     public enum EVENT
@@ -29,23 +33,29 @@ public class StateFSM
     public virtual void Update() { stage = EVENT.UPDATE; }
     public virtual void Exit() { stage = EVENT.EXIT; }
 
+    /// <summary>
+    /// Processa o estágio atual da máquina de estados (Enter, Update ou Exit).
+    /// </summary>
     public StateFSM Process()
     {
         if (stage == EVENT.ENTER)
         {
             Enter();
             Debug.Log("Esse é o novo estado: " + state);
-        } 
+        }
         if (stage == EVENT.UPDATE) Update();
         if (stage == EVENT.EXIT)
         {
             Exit();
             return nextState;
         }
-        
+
         return this;
     }
 
+    /// <summary>
+    /// Verifica se o NPC possui linha de visão limpa (sem obstáculos) até ao jogador usando Raycast.
+    /// </summary>
     public bool CanSeePlayer(AIComponent aiTank)
     {
         Vector3 origin = npc.transform.position + Vector3.up * 1.5f; // Altura do canhão/visão
@@ -53,7 +63,7 @@ public class StateFSM
         Vector3 direction = (target - origin).normalized;
         float distance = Vector3.Distance(origin, target);
 
-        // Lança o raio até a distância do jogador
+        // Lança o raio até à distância do jogador
         if (Physics.Raycast(origin, direction, out RaycastHit hit, distance))
         {
             // Se colidiu diretamente com o jogador (ou com algo cujo root seja o jogador)
@@ -63,6 +73,6 @@ public class StateFSM
             }
         }
 
-        return false; // Existe um obstáculo bloqueando a visão
+        return false; // Existe um obstáculo a bloquear a visão
     }
 }

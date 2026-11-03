@@ -5,6 +5,10 @@ using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 using TMPro;
 
+/// <summary>
+/// Gerencia o processo de autenticação do jogador, validação de credenciais via API PHP 
+/// e transição segura para a cena de gameplay.
+/// </summary>
 public class LoginManager : MonoBehaviour
 {
     public TMP_InputField emailInput;
@@ -12,6 +16,7 @@ public class LoginManager : MonoBehaviour
     public TextMeshProUGUI feedbackText;
     public string gameplaySceneName = "Gameplay";
 
+    [Tooltip("Endpoint da API PHP para autenticação.")]
     private string loginUrl = "http://localhost/Senac_aulas/SistemaWeb/index.php?action=api_login";
 
     [Serializable]
@@ -30,6 +35,10 @@ public class LoginManager : MonoBehaviour
         public string email;
     }
 
+    /// <summary>
+    /// Coleta os dados de login inseridos pelo usuário, gera um token GUID único 
+    /// e inicia a corrotina de requisição HTTP.
+    /// </summary>
     public void FazerLogin()
     {
         LoginData dadosLogin = new LoginData
@@ -43,6 +52,12 @@ public class LoginManager : MonoBehaviour
         StartCoroutine(LoginRoutine(loginUrl, jsonString));
     }
 
+    /// <summary>
+    /// Corrotina que realiza o POST para o middleware de login.
+    /// - Valida se o e-mail e senha são aceitos.
+    /// - Extrai o JSON de resposta contendo os dados do jogador e armazena no GameManager.
+    /// - Trata falhas de conexão exibindo feedback visual na UI[cite: 13].
+    /// </summary>
     private IEnumerator LoginRoutine(string url, string jsonBody)
     {
         using (UnityWebRequest request = new UnityWebRequest(url, "POST"))

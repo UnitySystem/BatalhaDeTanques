@@ -2,6 +2,9 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+/// <summary>
+/// Controla a barra de vida do jogador, danos sofridos e o fluxo de derrota no jogo.
+/// </summary>
 public class PlayerHealth : MonoBehaviour
 {
     [Header("Configurações de Vida")]
@@ -17,6 +20,10 @@ public class PlayerHealth : MonoBehaviour
         UpdateHealthBar();
     }
 
+    /// <summary>
+    /// Aplica dano ao jogador, atualiza a interface e verifica a condição de derrota.
+    /// </summary>
+    /// <param name="amount">Quantidade de dano a aplicar.</param>
     public void TakeDamage(float amount)
     {
         currentHealth -= amount;
@@ -30,6 +37,9 @@ public class PlayerHealth : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Atualiza o preenchimento da barra de vida visual do jogador.
+    /// </summary>
     private void UpdateHealthBar()
     {
         if (healthBarFill != null)
@@ -38,6 +48,10 @@ public class PlayerHealth : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Executa a rotina de derrota: calcula os pontos parciais obtidos, 
+    /// envia o registo da partida ao middleware (venceu = false) e transiciona para a cena de derrota.
+    /// </summary>
     private void Die()
     {
         // Calcula os pontos obtidos com base nos inimigos que ele conseguiu matar antes de morrer

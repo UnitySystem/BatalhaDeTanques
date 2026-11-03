@@ -1,5 +1,9 @@
 using UnityEngine;
 
+/// <summary>
+/// Responsável pela geração procedural da malha de nós (Grid) no ambiente 3D, 
+/// detecção de obstáculos e mapeamento de vizinhança.
+/// </summary>
 public class GridManager : MonoBehaviour
 {
     [Header("Dimensões do Grid (X, Y)")]
@@ -24,10 +28,13 @@ public class GridManager : MonoBehaviour
 
     private void Awake()
     {
-        // Instancia os GameObjects de fato APENAS na inicialização do jogo
+        // Gera o grid proceduralmente no início da execução
         GenerateGrid();
     }
 
+    /// <summary>
+    /// Instancia os nós numa matriz bidimensional e verifica colisões com obstáculos.
+    /// </summary>
     public void GenerateGrid()
     {
         grid = new Node[gridSizeX, gridSizeY];
@@ -99,6 +106,9 @@ public class GridManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Converte uma posição do mundo numa coordenada da matriz e retorna o nó correspondente mais próximo.
+    /// </summary>
     public Node GetClosestNode(Vector3 worldPosition)
     {
         if (grid == null) return null;
@@ -114,14 +124,15 @@ public class GridManager : MonoBehaviour
         return grid[x, y];
     }
 
-    // Desenha uma prévia no Scene View SEM instanciar nenhum GameObject no Editor
+    /// <summary>
+    /// Desenha uma pré-visualização interativa na Scene View para auxiliar no design de níveis.
+    /// </summary>
     private void OnDrawGizmos()
     {
         if (!drawGizmos) return;
 
         Vector3 origin = transform.position;
 
-        // Desenha a simulação dos nós diretamente no Editor
         for (int x = 0; x < gridSizeX; x++)
         {
             for (int y = 0; y < gridSizeY; y++)

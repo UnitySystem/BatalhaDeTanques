@@ -1,5 +1,9 @@
 using UnityEngine;
 
+/// <summary>
+/// Controla o comportamento físico dos projéteis, tratamento de colisões 
+/// e cálculo de dano em área (splash damage) sobre alvos.
+/// </summary>
 public class BulletPhysics : MonoBehaviour
 {
     public GameObject explosion;
@@ -18,22 +22,25 @@ public class BulletPhysics : MonoBehaviour
     private void Start()
     {
         body = GetComponent<Rigidbody>();
+        // Destrói o projétil automaticamente após o tempo limite de vida
         Destroy(gameObject, lifetime);
     }
 
     private void Update()
     {
+        // Alinha a rotação frontal da bala com a sua velocidade direcional
         if (body != null && body.linearVelocity != Vector3.zero)
         {
             transform.forward = body.linearVelocity;
         }
     }
 
+    /// <summary>
+    /// Deteta colisões físicas com o ambiente ou alvos e dispara o evento de explosão.
+    /// </summary>
     private void OnCollisionEnter(Collision collision)
     {
-        // 1. Verifica se a camada (Layer) do objeto colidido está selecionada na impactLayer
         bool isImpactLayer = ((1 << collision.gameObject.layer) & impactLayer) != 0;
-
         bool isImpactTag = collision.gameObject.CompareTag("tank");
 
         if (isImpactLayer || isImpactTag)
@@ -42,6 +49,10 @@ public class BulletPhysics : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Instancia o efeito visual de explosão e aplica dano proporcional por proximidade 
+    /// a todos os tanques dentro do raio de alcance.
+    /// </summary>
     private void Explode()
     {
         GameObject exp = Instantiate(explosion, transform.position, Quaternion.identity);
@@ -54,8 +65,8 @@ public class BulletPhysics : MonoBehaviour
             float distance = Vector3.Distance(transform.position, hit.transform.position);
             float damageMultiplier = Mathf.Clamp01(1f - (distance / explosionRadius));
             float calculatedDamage = maxDamage * damageMultiplier;
-            
-            if (hit.TryGetComponent<PlayerHealth>(out PlayerHealth playerHealth)) 
+
+            if (hit.TryGetComponent<PlayerHealth>(out PlayerHealth playerHealth))
             {
                 playerHealth.TakeDamage(calculatedDamage);
             }
@@ -63,10 +74,8 @@ public class BulletPhysics : MonoBehaviour
             {
                 enemyHealth.TakeDamage(calculatedDamage);
             }
-
         }
 
-        // Destrói a bala após o impacto
         Destroy(gameObject);
     }
 

@@ -1,6 +1,9 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+/// <summary>
+/// Gere a movimentação física do tanque do jogador, rotação do canhão e disparo de projéteis.
+/// </summary>
 public class TankComponent : MonoBehaviour
 {
     [Header("Movement Settings")]
@@ -60,6 +63,9 @@ public class TankComponent : MonoBehaviour
         HandleShooting();
     }
 
+    /// <summary>
+    /// Processa a translação e rotação do tanque com base nos inputs recebidos.
+    /// </summary>
     private void HandleMovement()
     {
         if (moveAction == null || rb == null) return;
@@ -81,6 +87,9 @@ public class TankComponent : MonoBehaviour
         rb.MoveRotation(rb.rotation * turnOffset);
     }
 
+    /// <summary>
+    /// Controla a elevação e inclinação do canhão dentro dos limites permitidos.
+    /// </summary>
     private void HandleCannonRotation()
     {
         if (cannon == null) return;
@@ -105,6 +114,9 @@ public class TankComponent : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Dispara um projétil a partir da posição do canhão ao pressionar o botão esquerdo do rato.
+    /// </summary>
     private void HandleShooting()
     {
         if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
